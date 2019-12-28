@@ -16,7 +16,7 @@ object AppUpdateHelper {
     fun checkForNewVersion(activity: Activity, gitUser: String, gitRepo: String, coroutineScope: LifecycleCoroutineScope) = coroutineScope.launch(Dispatchers.Main) {
         val key = "LAST_VERSION_CHECK"
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-        if (prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24) {
+        if (prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
             try {
                 val logEntries = withContext(Dispatchers.Default) {
                     val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
