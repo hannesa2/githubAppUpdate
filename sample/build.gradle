@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+def gitRepoUser = 'GIT_USER'
+def gitRepoName = 'GIT_REPOSITORY'
+
+android {
+    compileSdkVersion propCompileSdkVersion
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+
+        minSdkVersion 17
+        targetSdkVersion 29
+
+        buildConfigField "String", gitRepoUser, "\"" + getGitUser() + "\""
+        buildConfigField "String", gitRepoName, "\"" + getGitRepository() + "\""
+    }
+
+    packagingOptions {
+        pickFirst 'META-INF/atomicfu.kotlin_module'
+    }
+}
+
+dependencies {
+    implementation project(':githubAppUpdate')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+static def getGitOriginRemote() {
+    def process = "git remote -v".execute()
+    def values = process.text.toString().trim().split("\\r\\n|\\n|\\r")
+
+    def found = values.find { it.startsWith("origin") && it.endsWith("(push)") }
+    return found.replace("origin", "").replace("(push)", "").replace(".git", "").trim()
+}
+
+static def getGitUser() {
+    def token = getGitOriginRemote().split("/")
+    return token[3]
+}
+
+static def getGitRepository() {
+    def token = getGitOriginRemote().split("/")
+    return token[4]
+}

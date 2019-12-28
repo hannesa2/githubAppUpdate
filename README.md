@@ -1,0 +1,68 @@
+[![](https://jitpack.io/v/hannesa2/ChangeLog.svg)](https://jitpack.io/#hannesa2/ChangeLog)
+
+# ChangeLog - An Android Library to display a Change Log without take care about VersionCode
+
+![Screenshot](screenshot_1.png)
+![Screenshot](screenshot_2.png)
+
+This library provides an easy way to display a change log in your app.
+Without take care to VersionCode is necessary when you auto generate the VersionCode
+
+## Common usage
+
+1. Display the change log dialog by putting the following code in your activity's `onCreate()` method:
+
+  ```java
+  ChangeLog changelog = new ChangeLog(this);
+  if (changelog.isFirstRun()) {
+      changelog.getLogDialog().show();
+  }
+  ```
+
+## Include the library
+
+The easiest way to add ckChangeLog to your project is via Gradle. Just add the following lines to your `build.gradle`:
+
+```groovy
+dependencies {
+    implementation 'com.github.hannesa2:githubAppUpdate:1.0.0'
+}
+```
+
+To tell Gradle where to find the library, make sure `build.gradle` also contains this:
+
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+## Customize labels
+
+In order to change the labels of the dialog add the following items to your `strings.xml`:
+
+```
+  <string name="changelog_full_title">Change Log</string>
+  <string name="changelog_title">What\'s New</string>
+  <string name="changelog_ok_button">OK</string>
+  <string name="changelog_show_full">More…</string>
+```
+
+## License
+
+    Copyright (C) 2012-2019 hannesa2 and contributors
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
