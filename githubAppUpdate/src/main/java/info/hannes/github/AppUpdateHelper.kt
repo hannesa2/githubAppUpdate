@@ -1,11 +1,11 @@
 package info.hannes.github
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.coroutineScope
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
 
 object AppUpdateHelper {
-    fun checkForNewVersion(activity: Activity, gitUser: String, gitRepo: String, coroutineScope: LifecycleCoroutineScope) = coroutineScope.launch(Dispatchers.Main) {
+    fun checkForNewVersion(activity: AppCompatActivity, gitUser: String, gitRepo: String) = activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
         val key = "LAST_VERSION_CHECK"
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         if (prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {

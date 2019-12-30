@@ -9,11 +9,10 @@ This library provides an easy way to update app with added apk in release.
 
 ## Common usage
 
-1. Extends from `AppCompatActivity` and import `coroutineScope`
+1. Extends from `AppCompatActivity`
 
   ```java
   import androidx.appcompat.app.AppCompatActivity
-  import androidx.lifecycle.coroutineScope
   
   class MainActivity : AppCompatActivity() {
     
@@ -25,8 +24,7 @@ This library provides an easy way to update app with added apk in release.
   ```java
   AppUpdateHelper.checkForNewVersion(this, 
     BuildConfig.GIT_USER, 
-    BuildConfig.GIT_REPOSITORY, 
-    lifecycle.coroutineScope
+    BuildConfig.GIT_REPOSITORY
   )
   ```
   
@@ -71,7 +69,7 @@ The easiest way to add `githubAppUpdate to your project is via Gradle. Just add 
 
 ```groovy
 dependencies {
-    implementation 'com.github.hannesa2:githubAppUpdate:0.2'
+    implementation 'com.github.hannesa2:githubAppUpdate:$latestVersion'
 }
 ```
 
