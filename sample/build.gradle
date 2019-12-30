@@ -1,21 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-def gitRepoUser = 'GIT_USER'
-def gitRepoName = 'GIT_REPOSITORY'
-
 android {
     compileSdkVersion propCompileSdkVersion
 
     defaultConfig {
-        versionCode 1
+        versionCode getGitCommitCount()
         versionName "1.0"
 
         minSdkVersion 17
         targetSdkVersion 29
 
-        buildConfigField "String", gitRepoUser, "\"" + getGitUser() + "\""
-        buildConfigField "String", gitRepoName, "\"" + getGitRepository() + "\""
+        buildConfigField "String", 'GIT_USER', "\"" + getGitUser() + "\""
+        buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitRepository() + "\""
     }
 
     packagingOptions {
@@ -29,6 +26,11 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation 'com.google.android.material:material:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+static def getGitCommitCount() {
+    def process = "git rev-list HEAD --count".execute()
+    return process.text.toInteger()
 }
 
 static def getGitOriginRemote() {
