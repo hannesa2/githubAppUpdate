@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        AppUpdateHelper.checkForNewVersion(MainActivity@this, BuildConfig.GIT_USER, BuildConfig.GIT_REPOSITORY)
+        AppUpdateHelper.checkForNewVersion(MainActivity@this, BuildConfig.GIT_USER, BuildConfig.GIT_REPOSITORY, BuildConfig.VERSION_NAME)
     }
 
 }

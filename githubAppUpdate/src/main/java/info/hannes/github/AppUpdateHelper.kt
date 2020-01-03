@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
 
 object AppUpdateHelper {
-    fun checkForNewVersion(activity: AppCompatActivity, gitUser: String, gitRepo: String) = activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
+    fun checkForNewVersion(activity: AppCompatActivity, gitUser: String, gitRepo: String, versionName: String) = activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
         val key = "LAST_VERSION_CHECK"
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         if (prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
@@ -26,7 +26,7 @@ object AppUpdateHelper {
 
                 val latestRelease = logEntries.body()?.firstOrNull()
                 latestRelease?.let {
-                    if (it.tagName > BuildConfig.VERSION_NAME) {
+                    if (it.tagName > versionName) {
                         AlertDialog.Builder(activity)
                                 .setTitle("New Version")
                                 .setMessage("There is a new version ${it.tagName} on Github. Do you want to download it ?")
