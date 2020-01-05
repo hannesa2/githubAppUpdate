@@ -11,6 +11,10 @@ android:
 jdk:
   - openjdk8
 
+branches:
+  only:
+    - master
+
 dist: trusty
 
 script:
