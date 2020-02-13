@@ -3,7 +3,6 @@
 # An Android Library to update app with added apk in release 
 
 ![Screenshot](screenshot_1.png)
-![Screenshot](screenshot_2.png)
 
 This library provides an easy way to update app with provided apk in release.
 
