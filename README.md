@@ -21,11 +21,12 @@ This library provides an easy way to update app with provided apk in release.
 2. Display the change log dialog by putting the following code in your activity's `onCreate()` method:
 
   ```java
-  AppUpdateHelper.checkForNewVersion(
-    MainActivity@this, 
-    BuildConfig.GIT_USER, 
-    BuildConfig.GIT_REPOSITORY
-  )
+    AppUpdateHelper.checkForNewVersion(
+        MainActivity@ this,
+        BuildConfig.GIT_USER,
+        BuildConfig.GIT_REPOSITORY,
+        BuildConfig.VERSION_NAME
+    )
   ```
   
 3. And you need repository info eg in `build.config`
