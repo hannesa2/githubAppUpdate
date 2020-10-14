@@ -9,7 +9,7 @@ android {
         versionName "1.0"
 
         minSdkVersion 17
-        targetSdkVersion 29
+        targetSdkVersion 30
 
         buildConfigField "String", 'GIT_USER', "\"" + getGitUser() + "\""
         buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitRepository() + "\""
