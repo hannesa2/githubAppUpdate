@@ -2,7 +2,7 @@ package info.hannes.github
 
 import okhttp3.logging.HttpLoggingInterceptor
 
-class GithubClient(private val logLevel: HttpLoggingInterceptor.Level) {
+internal class GithubClient(private val logLevel: HttpLoggingInterceptor.Level) {
 
     val github: IGithub
 
