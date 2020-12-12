@@ -27,9 +27,11 @@ object AppUpdateHelper {
 
                 val latestRelease = logEntries.body()?.firstOrNull()
                 latestRelease?.let {
+                    val assetApk = it.assets.find { it.name.endsWith("release.apk") }
+
                     Log.d("AppUpdateHelper", it.tagName + " > " + versionName + " " + (it.tagName > versionName))
                     if (it.tagName > versionName) {
-                        AlertDialog.Builder(activity)
+                        val dialog = AlertDialog.Builder(activity)
                                 .setTitle("New Version")
                                 .setMessage("There is a new version ${it.tagName} on Github. Do you want to download it ?")
                                 .setOnCancelListener { dialog ->
@@ -43,7 +45,15 @@ object AppUpdateHelper {
                                     activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
                                     dialog.dismiss()
                                 }
-                                .show()
+
+                        assetApk?.let {
+                            dialog.setNeutralButton(activity.getString(R.string.directDownload)) { dialog, _ ->
+                                val uriUrl = Uri.parse(it.browserDownloadUrl)
+                                activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
+                                dialog.dismiss()
+                            }
+                        }
+                        dialog.show()
                     }
                 }
             } catch (e: Exception) {
