@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources >
 
-    <string name="directDownload">Direct download</string>
+    <string name="directDownload">Download</string>
+    <string name="showRelease">Show</string>
 </resources>
