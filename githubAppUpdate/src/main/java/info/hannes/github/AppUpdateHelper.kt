@@ -32,8 +32,10 @@ object AppUpdateHelper {
                     Log.d("AppUpdateHelper", it.tagName + " > " + versionName + " " + (it.tagName > versionName))
                     if (it.tagName > versionName) {
                         val dialog = AlertDialog.Builder(activity)
-                                .setTitle("New Version")
-                                .setMessage("There is a new version ${it.tagName} on Github. Do you want to download it ?")
+                                .setTitle("New Version on Github")
+                                .setMessage("You use version \n$versionName\n " +
+                                        "and there is a new version \n${it.tagName}\n "+
+                                        "Do you want to download it ?")
                                 .setOnCancelListener { dialog ->
                                     dialog.dismiss()
                                 }
