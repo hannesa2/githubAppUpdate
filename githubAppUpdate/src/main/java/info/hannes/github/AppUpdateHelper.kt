@@ -33,8 +33,8 @@ object AppUpdateHelper {
                     if (it.tagName > versionName) {
                         val dialog = AlertDialog.Builder(activity)
                                 .setTitle("New Version on Github")
-                                .setMessage("You use version \n$versionName\n " +
-                                        "and there is a new version \n${it.tagName}\n "+
+                                .setMessage("You use version \n$versionName\n" +
+                                        "and there is a new version \n${it.tagName}\n"+
                                         "Do you want to download it ?")
                                 .setOnCancelListener { dialog ->
                                     dialog.dismiss()
@@ -42,7 +42,7 @@ object AppUpdateHelper {
                                 .setNegativeButton(activity.getString(android.R.string.no)) { dialog, _ ->
                                     dialog.dismiss()
                                 }
-                                .setPositiveButton(activity.getString(android.R.string.yes)) { dialog, _ ->
+                                .setPositiveButton(activity.getString(R.string.showRelease)) { dialog, _ ->
                                     val uriUrl = Uri.parse(it.htmlUrl)
                                     activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
                                     dialog.dismiss()
