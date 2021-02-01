@@ -27,5 +27,5 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.1.1"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2-native-mt"
     api "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 }
