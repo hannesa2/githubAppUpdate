@@ -1,6 +1,7 @@
 package info.hannes.github.sample
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import info.hannes.github.AppUpdateHelper
 
@@ -21,7 +22,8 @@ class MainActivity : AppCompatActivity() {
                 this,
                 BuildConfig.GIT_USER,
                 BuildConfig.GIT_REPOSITORY,
-                BuildConfig.VERSION_NAME
+                BuildConfig.VERSION_NAME,
+                { msg -> Log.d("result", msg) }
         )
     }
 
