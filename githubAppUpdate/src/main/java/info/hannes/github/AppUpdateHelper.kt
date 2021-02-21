@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
 
 object AppUpdateHelper {
-    fun checkForNewVersion(activity: AppCompatActivity, gitUser: String, gitRepo: String, versionName: String, callback: (String) -> Unit, force: Boolean = false
+    fun checkForNewVersion(activity: AppCompatActivity, gitUser: String, gitRepo: String, versionName: String, callback: ((String) -> Unit)? = null, force: Boolean = false
     ) =
             activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
                 val key = "LAST_VERSION_CHECK"
@@ -32,7 +32,7 @@ object AppUpdateHelper {
                             val assetApk = it.assets.find { it.name.endsWith("release.apk") }
 
                             Log.d("AppUpdateHelper", it.tagName + " > " + versionName + " " + (it.tagName > versionName))
-                            callback(it.tagName)
+                            callback?.invoke(it.tagName)
                             if (it.tagName > versionName) {
                                 val dialog = AlertDialog.Builder(activity)
                                         .setTitle("New Version on Github")
@@ -62,7 +62,7 @@ object AppUpdateHelper {
                                 }
                                 dialog.show()
                             } else {
-                                callback("Nothing to do with ${it.tagName}")
+                                callback?.invoke("Nothing to do with ${it.tagName}")
                             }
                         }
                     } catch (e: Exception) {
