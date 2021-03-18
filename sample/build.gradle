@@ -11,8 +11,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 30
 
-        buildConfigField "String", 'GIT_USER', "\"" + getGitUser() + "\""
-        buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitRepository() + "\""
+        buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitOriginRemote() + "\""
     }
 
     packagingOptions {
@@ -44,14 +43,4 @@ static def getGitOriginRemote() {
 
     def found = values.find { it.startsWith("origin") && it.endsWith("(push)") }
     return found.replace("origin", "").replace("(push)", "").replace(".git", "").trim()
-}
-
-static def getGitUser() {
-    def token = getGitOriginRemote().split("/")
-    return token[3]
-}
-
-static def getGitRepository() {
-    def token = getGitOriginRemote().split("/")
-    return token[4]
 }

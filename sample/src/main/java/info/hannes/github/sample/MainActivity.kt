@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
         AppUpdateHelper.checkForNewVersion(
                 this,
-                BuildConfig.GIT_USER,
                 BuildConfig.GIT_REPOSITORY,
                 BuildConfig.VERSION_NAME,
                 { msg -> Log.d("result", msg) }
