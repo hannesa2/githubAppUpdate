@@ -14,10 +14,16 @@ import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
 
 object AppUpdateHelper {
-    fun checkForNewVersion(activity: AppCompatActivity, gitUser: String, gitRepo: String, versionName: String, callback: ((String) -> Unit)? = null, force: Boolean = false
+    fun checkForNewVersion(activity: AppCompatActivity, gitRepoUrl: String, currentVersionName: String, callback: ((String) -> Unit)? = null, force: Boolean = false
     ) = activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
         val key = "LAST_VERSION_CHECK"
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        val gitRepoUrlHttps = gitRepoUrl.replace("git@", "https//")
+                .replace(":","/")
+                .replace("///","//")
+                .replace("https//", "https://").split("/")
+        val gitUser = gitRepoUrlHttps[3]
+        val gitRepo = gitRepoUrlHttps[4]
         if (force || prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
             try {
                 val logEntries = withContext(Dispatchers.Default) {
@@ -31,12 +37,12 @@ object AppUpdateHelper {
                 latestRelease?.let {
                     val assetApk = it.assets.find { it.name.endsWith("release.apk") }
 
-                    Log.d("AppUpdateHelper", it.tagName + " > " + versionName + " " + (it.tagName > versionName))
+                    Log.d("AppUpdateHelper", it.tagName + " > " + currentVersionName + " " + (it.tagName > currentVersionName))
                     callback?.invoke(it.tagName)
-                    if (it.tagName > versionName) {
+                    if (it.tagName > currentVersionName) {
                         val dialog = AlertDialog.Builder(activity)
                                 .setTitle("New Version on Github")
-                                .setMessage("You use version \n$versionName\n" +
+                                .setMessage("You use version \n$currentVersionName\n" +
                                         "and there is a new version \n${it.tagName}\n" +
                                         "Do you want to download it ?")
                                 .setOnCancelListener { dialog ->
