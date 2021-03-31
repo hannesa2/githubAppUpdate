@@ -11,6 +11,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.github.ben-manes.versions" version "$version"
+}
+
 allprojects {
     repositories {
         google()
