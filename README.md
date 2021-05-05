@@ -23,7 +23,6 @@ This library provides an easy way to update app with provided apk in release.
   ```java
     AppUpdateHelper.checkForNewVersion(
         MainActivity@ this,
-        BuildConfig.GIT_USER,
         BuildConfig.GIT_REPOSITORY,
         BuildConfig.VERSION_NAME
     )
@@ -36,7 +35,6 @@ This library provides an easy way to update app with provided apk in release.
       ...
       versionCode getGitCommitCount()
     
-      buildConfigField "String", 'GIT_USER', "\"" + getGitUser() + "\""
       buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitRepository() + "\""
     }
     
