@@ -51,11 +51,6 @@ This library provides an easy way to update app with provided apk in release.
       return found.replace("origin", "").replace("(push)", "").replace(".git", "").trim()
     }
     
-    static def getGitUser() {
-      def token = getGitOriginRemote().split("/")
-      return token[3]
-    }
-    
     static def getGitRepository() {
       def token = getGitOriginRemote().split("/")
       return token[4]
@@ -85,7 +80,7 @@ allprojects {
 
 ## License
 
-    Copyright (C) 2019 hannesa2
+    Copyright (C) 2021 hannesa2
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
