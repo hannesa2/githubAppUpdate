@@ -18,10 +18,13 @@ object AppUpdateHelper {
     ) = activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
         val key = "LAST_VERSION_CHECK"
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        Log.d("AppUpdateHelper", gitRepoUrl)
         val gitRepoUrlHttps = gitRepoUrl.replace("git@", "https//")
                 .replace(":","/")
                 .replace("///","//")
-                .replace("https//", "https://").split("/")
+                .replace("https//", "https://")
+            .split("/")
+        Log.d("AppUpdateHelper", gitRepoUrlHttps.toString())
         val gitUser = gitRepoUrlHttps[3]
         val gitRepo = gitRepoUrlHttps[4]
         if (force || prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
