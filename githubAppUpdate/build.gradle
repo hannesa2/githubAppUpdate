@@ -8,7 +8,6 @@ android {
     compileSdkVersion propCompileSdkVersion
 
     defaultConfig {
-        versionName "1.0.0"
 
         minSdkVersion 17
         project.archivesBaseName = "githubAppUpdate"
