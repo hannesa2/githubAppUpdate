@@ -23,5 +23,5 @@ allprojects {
 }
 
 ext {
-    propCompileSdkVersion = 29
+    propCompileSdkVersion = 30
 }
