@@ -19,21 +19,20 @@ object AppUpdateHelper {
         val key = "LAST_VERSION_CHECK"
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val gitRepoUrlHttps = gitRepoUrl.replace("git@", "https//")
-                .replace(":","/")
-                .replace("///","//")
-                .replace("https//", "https://").split("/")
+            .replace(":", "/")
+            .replace("///", "//")
+            .replace("https//", "https://").split("/")
         val gitUser = gitRepoUrlHttps[3]
         val gitRepo = gitRepoUrlHttps[4]
         if (force || prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
             try {
-                val logEntries = withContext(Dispatchers.Default) {
+                val versionList = withContext(Dispatchers.Default) {
                     val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
-                    @Suppress("BlockingMethodInNonBlockingContext")
                     client.github.getGithubVersions(gitUser, gitRepo).execute()
                 }
                 prefs.edit().putLong(key, System.currentTimeMillis()).apply()
 
-                val latestRelease = logEntries.body()?.firstOrNull()
+                val latestRelease = versionList.body()?.firstOrNull()
                 latestRelease?.let {
                     val assetApk = it.assets.find { it.name.endsWith("release.apk") }
 
@@ -41,22 +40,24 @@ object AppUpdateHelper {
                     callback?.invoke(it.tagName)
                     if (it.tagName > currentVersionName) {
                         val dialog = AlertDialog.Builder(activity)
-                                .setTitle("New Version on Github")
-                                .setMessage("You use version \n$currentVersionName\n" +
+                            .setTitle("New Version on Github")
+                            .setMessage(
+                                "You use version \n$currentVersionName\n" +
                                         "and there is a new version \n${it.tagName}\n" +
-                                        "Do you want to download it ?")
-                                .setOnCancelListener { dialog ->
-                                    dialog.dismiss()
-                                }
-                                .setNegativeButton(activity.getString(android.R.string.no)) { dialog, _ ->
-                                    dialog.dismiss()
-                                }
-                                .setPositiveButton(activity.getString(R.string.showRelease)) { dialog, _ ->
-                                    val uriUrl = Uri.parse(it.htmlUrl)
-                                    Log.d("open", uriUrl.toString())
-                                    activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
-                                    dialog.dismiss()
-                                }
+                                        "Do you want to download it ?"
+                            )
+                            .setOnCancelListener { dialog ->
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton(activity.getString(android.R.string.no)) { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .setPositiveButton(activity.getString(R.string.showRelease)) { dialog, _ ->
+                                val uriUrl = Uri.parse(it.htmlUrl)
+                                Log.d("open", uriUrl.toString())
+                                activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
+                                dialog.dismiss()
+                            }
 
                         assetApk?.let {
                             dialog.setNeutralButton(activity.getString(R.string.directDownload)) { dialog, _ ->
