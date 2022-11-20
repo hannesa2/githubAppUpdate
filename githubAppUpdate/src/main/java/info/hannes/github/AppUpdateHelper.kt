@@ -33,17 +33,18 @@ object AppUpdateHelper {
                 prefs.edit().putLong(key, System.currentTimeMillis()).apply()
 
                 val latestRelease = versionList.body()?.firstOrNull()
-                latestRelease?.let {
-                    val assetApk = it.assets.find { it.name.endsWith("release.apk") }
+                latestRelease?.let { release ->
+                    val assetApk = release.assets.find { it.name.endsWith("release.apk") }
 
-                    Log.d("AppUpdateHelper", it.tagName + " > " + currentVersionName + " " + (it.tagName > currentVersionName))
-                    callback?.invoke(it.tagName)
-                    if (it.tagName > currentVersionName) {
+                    Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
+                    callback?.invoke(release.tagName)
+                    if (release.tagName > currentVersionName) {
+                        @Suppress("DEPRECATION")
                         val dialog = AlertDialog.Builder(activity)
                             .setTitle("New Version on Github")
                             .setMessage(
                                 "You use version \n$currentVersionName\n" +
-                                        "and there is a new version \n${it.tagName}\n" +
+                                        "and there is a new version \n${release.tagName}\n" +
                                         "Do you want to download it ?"
                             )
                             .setOnCancelListener { dialog ->
@@ -53,7 +54,7 @@ object AppUpdateHelper {
                                 dialog.dismiss()
                             }
                             .setPositiveButton(activity.getString(R.string.showRelease)) { dialog, _ ->
-                                val uriUrl = Uri.parse(it.htmlUrl)
+                                val uriUrl = Uri.parse(release.htmlUrl)
                                 Log.d("open", uriUrl.toString())
                                 activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
                                 dialog.dismiss()
@@ -69,7 +70,7 @@ object AppUpdateHelper {
                         }
                         dialog.show()
                     } else {
-                        callback?.invoke("Nothing to do with ${it.tagName}")
+                        callback?.invoke("Nothing to do with ${release.tagName}")
                     }
                 }
             } catch (e: Exception) {
