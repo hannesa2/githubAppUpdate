@@ -20,11 +20,11 @@ This library provides an easy way to update app with provided apk in release.
 
 2. Display the change log dialog by putting the following code in your activity's `onCreate()` method:
 
-  ```java
+  ```kotlin
     AppUpdateHelper.checkForNewVersion(
-        MainActivity@ this,
+        this,
         BuildConfig.GIT_REPOSITORY,
-        BuildConfig.VERSION_NAME
+        { msg -> Log.d("result", msg) }
     )
   ```
   
