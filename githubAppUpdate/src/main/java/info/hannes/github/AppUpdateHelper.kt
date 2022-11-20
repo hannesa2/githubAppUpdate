@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import androidx.preference.PreferenceManager
-import info.hannes.github.AppUpdateHelper.getVersionName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -59,8 +58,7 @@ object AppUpdateHelper {
                 }
                 prefs.edit().putLong(key, System.currentTimeMillis()).apply()
 
-                val latestRelease = versionList.body()?.firstOrNull()
-                latestRelease?.let { release ->
+                versionList.body()?.firstOrNull()?.let { release ->
                     val assetApk = release.assets.find { it.name.endsWith("release.apk") }
 
                     Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
@@ -102,7 +100,7 @@ object AppUpdateHelper {
                 }
             } catch (e: Exception) {
                 Log.e("AppUpdateHelper", "git check deliver: ${e.message}")
-                Toast.makeText(activity, "git check deliver: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "git check delivers: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
