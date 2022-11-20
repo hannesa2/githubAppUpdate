@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         AppUpdateHelper.checkForNewVersion(
-                this,
-                BuildConfig.GIT_REPOSITORY,
-                BuildConfig.VERSION_NAME,
-                { msg -> Log.d("result", msg) }
+            this,
+            BuildConfig.GIT_REPOSITORY,
+            { msg -> Log.d("result", msg) },
+            force = true // just to enable debugging, without you can only debug once a day
         )
     }
 

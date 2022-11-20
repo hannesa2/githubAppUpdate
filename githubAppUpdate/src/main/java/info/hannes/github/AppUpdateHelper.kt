@@ -1,21 +1,48 @@
 package info.hannes.github
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import androidx.preference.PreferenceManager
+import info.hannes.github.AppUpdateHelper.getVersionName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
 
 object AppUpdateHelper {
-    fun checkForNewVersion(activity: AppCompatActivity, gitRepoUrl: String, currentVersionName: String, callback: ((String) -> Unit)? = null, force: Boolean = false
+
+    private fun Activity.getVersionName(): String = try {
+        this.getPackageInfo().versionName ?: ""
+    } catch (e: PackageManager.NameNotFoundException) {
+        ""
+    }
+
+    @Suppress("DEPRECATION")
+    fun Context.getPackageInfo(): PackageInfo {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
+        } else {
+            packageManager.getPackageInfo(packageName, 0)
+        }
+    }
+
+    fun checkForNewVersion(
+        activity: AppCompatActivity,
+        gitRepoUrl: String,
+        callback: ((String) -> Unit)? = null,
+        force: Boolean = false
     ) = activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
+        val currentVersionName = activity.getVersionName()
         val key = "LAST_VERSION_CHECK"
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val gitRepoUrlHttps = gitRepoUrl.replace("git@", "https//")
