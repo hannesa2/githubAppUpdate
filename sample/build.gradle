@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
 }
 
-
 android {
     compileSdkVersion propCompileSdkVersion
 
@@ -11,7 +10,7 @@ android {
         versionCode getGitCommitCount()
         versionName "1.0"
 
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 33
 
         buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitOriginRemote() + "\""
