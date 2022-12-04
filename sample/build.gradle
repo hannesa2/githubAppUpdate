@@ -20,6 +20,10 @@ android {
     packagingOptions {
         pickFirst 'META-INF/atomicfu.kotlin_module'
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
