@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         targetSdkVersion 33
-        minSdkVersion 17
+        minSdkVersion 21
         project.archivesBaseName = "githubAppUpdate"
     }
 }
