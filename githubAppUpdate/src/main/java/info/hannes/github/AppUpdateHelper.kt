@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import androidx.preference.PreferenceManager
+import info.hannes.github.model.Asset
+import info.hannes.github.model.GithubVersion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -64,36 +66,7 @@ object AppUpdateHelper {
                     Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
                     callback?.invoke(release.tagName)
                     if (release.tagName > currentVersionName) {
-                        @Suppress("DEPRECATION")
-                        val dialog = AlertDialog.Builder(activity)
-                            .setTitle("New Version on Github")
-                            .setMessage(
-                                "You use version \n$currentVersionName\n" +
-                                        "and there is a new version \n${release.tagName}\n" +
-                                        "Do you want to download it ?"
-                            )
-                            .setOnCancelListener { dialog ->
-                                dialog.dismiss()
-                            }
-                            .setNegativeButton(activity.getString(android.R.string.no)) { dialog, _ ->
-                                dialog.dismiss()
-                            }
-                            .setPositiveButton(activity.getString(R.string.showRelease)) { dialog, _ ->
-                                val uriUrl = Uri.parse(release.htmlUrl)
-                                Log.d("open", uriUrl.toString())
-                                activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
-                                dialog.dismiss()
-                            }
-
-                        assetApk?.let {
-                            dialog.setNeutralButton(activity.getString(R.string.directDownload)) { dialog, _ ->
-                                val uriUrl = Uri.parse(it.browserDownloadUrl)
-                                Log.d("open", uriUrl.toString())
-                                activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
-                                dialog.dismiss()
-                            }
-                        }
-                        dialog.show()
+                        askUser(activity, currentVersionName, release, assetApk)
                     } else {
                         callback?.invoke("Nothing to do with ${release.tagName}")
                     }
@@ -103,5 +76,43 @@ object AppUpdateHelper {
                 Toast.makeText(activity, "git check delivers: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun askUser(
+        activity: AppCompatActivity,
+        currentVersionName: String,
+        release: GithubVersion,
+        assetApk: Asset?
+    ): AlertDialog? {
+        @Suppress("DEPRECATION")
+        val dialog = AlertDialog.Builder(activity)
+            .setTitle("New Version on Github")
+            .setMessage(
+                "You use version \n$currentVersionName\n" +
+                        "and there is a new version \n${release.tagName}\n" +
+                        "Do you want to download it ?"
+            )
+            .setOnCancelListener { dialog ->
+                dialog.dismiss()
+            }
+            .setNegativeButton(activity.getString(android.R.string.no)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(activity.getString(R.string.showRelease)) { dialog, _ ->
+                val uriUrl = Uri.parse(release.htmlUrl)
+                Log.d("open", uriUrl.toString())
+                activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
+                dialog.dismiss()
+            }
+
+        assetApk?.let {
+            dialog.setNeutralButton(activity.getString(R.string.directDownload)) { dialog, _ ->
+                val uriUrl = Uri.parse(it.browserDownloadUrl)
+                Log.d("open", uriUrl.toString())
+                activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
+                dialog.dismiss()
+            }
+        }
+        return dialog.show()
     }
 }
