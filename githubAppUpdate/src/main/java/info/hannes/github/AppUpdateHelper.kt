@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -13,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import androidx.preference.PreferenceManager
+import androidx.work.*
 import info.hannes.github.model.Asset
 import info.hannes.github.model.GithubVersion
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
+import java.util.concurrent.TimeUnit
 
 
 object AppUpdateHelper {
@@ -39,7 +42,14 @@ object AppUpdateHelper {
         }
     }
 
-    fun checkForNewVersion(
+    // silently in background
+    fun checkForNewVersion(activity: AppCompatActivity, gitRepoUrl: String, repeatTime : Long = 6, timeUnit: TimeUnit = TimeUnit.HOURS) {
+        val currentVersionName = activity.getVersionName()
+        DownloadWorker.run(activity, currentVersionName, gitRepoUrl, repeatTime, timeUnit)
+    }
+
+    // with user feedback
+    fun checkWithDialog(
         activity: AppCompatActivity,
         gitRepoUrl: String,
         callback: ((String) -> Unit)? = null,
@@ -74,6 +84,34 @@ object AppUpdateHelper {
         }
     }
 
+    internal fun checkForNewVersionSilent(
+        appContext: Context,
+        currentVersionName: String,
+        gitRepoUrl: String
+    ){
+        try {
+            val versionList = requestVersionsSync(gitRepoUrl)
+
+            versionList.body()?.firstOrNull()?.let { release ->
+                val assetApk = release.assets.find { it.name.endsWith("release.apk") }
+
+                Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
+                val text = "You use version $currentVersionName\n" +
+                        "and there is a new version ${release.tagName}\n"
+                if (release.tagName > currentVersionName) {
+                    Notify.notification(appContext, text, "New version for '${getAppName(appContext)}'", assetApk, release)
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("AppUpdateHelper", "git check deliver: ${e.message}")
+        }
+    }
+
+    private fun requestVersionsSync(gitRepoUrl: String): Response<MutableList<GithubVersion>> {
+        val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
+        return client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
+    }
+
     private suspend fun requestVersions(gitRepoUrl: String): Response<MutableList<GithubVersion>> {
         val versionList = withContext(Dispatchers.Default) {
             val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
@@ -88,9 +126,10 @@ object AppUpdateHelper {
         release: GithubVersion,
         assetApk: Asset?
     ): AlertDialog? {
+
         @Suppress("DEPRECATION")
         val dialog = AlertDialog.Builder(activity)
-            .setTitle("New Version on Github")
+            .setTitle("New version for ${getAppName(activity)}")
             .setMessage(
                 "You use version \n$currentVersionName\n" +
                         "and there is a new version \n${release.tagName}\n" +
@@ -119,4 +158,11 @@ object AppUpdateHelper {
         }
         return dialog.show()
     }
+
+    private fun getAppName(context: Context): CharSequence {
+        val pm = context.applicationContext.packageManager
+        val appInfo: ApplicationInfo = pm.getApplicationInfo(context.applicationContext.packageName, 0)
+        return context.applicationContext.packageManager.getApplicationLabel(appInfo)
+    }
+
 }
