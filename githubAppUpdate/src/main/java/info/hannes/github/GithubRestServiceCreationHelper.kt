@@ -7,7 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-internal object RestServiceCreationHelper {
+internal object GithubRestServiceCreationHelper {
 
     private var httpLoggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()
 
