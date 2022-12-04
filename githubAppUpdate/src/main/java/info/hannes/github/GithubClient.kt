@@ -7,7 +7,7 @@ internal class GithubClient(private val logLevel: HttpLoggingInterceptor.Level) 
     val github: IGithub
 
     private val githubService: IGithub
-        get() = RestServiceCreationHelper.createGithubService(
+        get() = GithubRestServiceCreationHelper.createGithubService(
                 IGithub::class.java,
                 logLevel
         )
