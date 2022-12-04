@@ -19,6 +19,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
+
 
 object AppUpdateHelper {
 
@@ -43,21 +45,15 @@ object AppUpdateHelper {
         callback: ((String) -> Unit)? = null,
         force: Boolean = false
     ) = activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
+
         val currentVersionName = activity.getVersionName()
+
         val key = "LAST_VERSION_CHECK"
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-        val gitRepoUrlHttps = gitRepoUrl.replace("git@", "https//")
-            .replace(":", "/")
-            .replace("///", "//")
-            .replace("https//", "https://").split("/")
-        val gitUser = gitRepoUrlHttps[3]
-        val gitRepo = gitRepoUrlHttps[4]
+
         if (force || prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
             try {
-                val versionList = withContext(Dispatchers.Default) {
-                    val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
-                    client.github.getGithubVersions(gitUser, gitRepo).execute()
-                }
+                val versionList = requestVersions(gitRepoUrl)
                 prefs.edit().putLong(key, System.currentTimeMillis()).apply()
 
                 versionList.body()?.firstOrNull()?.let { release ->
@@ -76,6 +72,14 @@ object AppUpdateHelper {
                 Toast.makeText(activity, "git check delivers: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private suspend fun requestVersions(gitRepoUrl: String): Response<MutableList<GithubVersion>> {
+        val versionList = withContext(Dispatchers.Default) {
+            val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
+            client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
+        }
+        return versionList
     }
 
     private fun askUser(
