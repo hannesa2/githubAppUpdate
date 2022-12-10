@@ -24,10 +24,17 @@ class MainActivity : AppCompatActivity() {
 
         AppUpdateHelper.checkForNewVersion(
             this,
-            BuildConfig.GIT_REPOSITORY,
-            { msg -> Log.d("result", msg) },
-            force = true // just to enable debugging, without you can only debug once a day
+            BuildConfig.GIT_REPOSITORY
         )
+
+        binding.button.setOnClickListener {
+            AppUpdateHelper.checkWithDialog(
+                this,
+                BuildConfig.GIT_REPOSITORY,
+                { msg -> Log.d("result", msg) },
+                force = true // just to enable debugging, without you can only debug once a day
+            )
+        }
     }
 
 }
