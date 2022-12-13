@@ -91,7 +91,7 @@ object AppUpdateHelper {
     ){
         try {
             val versionList = requestVersionsSync(gitRepoUrl)
-            Timber.e("currentVersionName ${currentVersionName}")
+            Timber.e("currentVersionName $currentVersionName")
             versionList.body()?.firstOrNull()?.let { release ->
                 val assetApk = release.assets.find { it.name.endsWith("release.apk") }
 
