@@ -84,7 +84,7 @@ object AppUpdateHelper {
         }
     }
 
-    internal fun checkForNewVersionSilent(
+    internal suspend fun checkForNewVersionSilent(
         appContext: Context,
         currentVersionName: String,
         gitRepoUrl: String
@@ -100,7 +100,9 @@ object AppUpdateHelper {
                         "and there is a new version ${release.tagName}\n"
                 if (release.tagName > currentVersionName) {
                     Timber.w(text)
-                    Notify.notification(appContext, text, "New version for '${getAppName(appContext)}'", assetApk, release)
+                    withContext(Dispatchers.Main) {
+                        Notify.notification(appContext, text, "New version for '${getAppName(appContext)}'", assetApk, release)
+                    }
                 }
             }
         } catch (e: Exception) {

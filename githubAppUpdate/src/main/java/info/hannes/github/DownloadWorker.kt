@@ -25,7 +25,7 @@ class DownloadWorker(private val appContext: Context, workerParams: WorkerParame
         Result.success(outputData)
     }
 
-    private fun check(currentVersion: String, repoUrl: String) {
+    private suspend fun check(currentVersion: String, repoUrl: String) {
         AppUpdateHelper.checkForNewVersionSilent(appContext, currentVersion, repoUrl)
     }
 
