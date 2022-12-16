@@ -1,9 +1,11 @@
-package info.hannes.github.sample
+package info.hannes.appUpdate.sample
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import info.hannes.github.AppUpdateHelper
+import info.hannes.github.sample.BuildConfig
+import info.hannes.appUpdate.AppUpdateHelper
+import info.hannes.github.sample.R
 import info.hannes.github.sample.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

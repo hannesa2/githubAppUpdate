@@ -1,4 +1,4 @@
-package info.hannes.github
+package info.hannes.appUpdate
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,8 +9,8 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import info.hannes.github.model.Asset
-import info.hannes.github.model.GithubVersion
+import info.hannes.appUpdate.model.Asset
+import info.hannes.appUpdate.model.GithubVersion
 
 internal object Notify {
 

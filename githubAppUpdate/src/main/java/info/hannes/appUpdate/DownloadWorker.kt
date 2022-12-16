@@ -1,4 +1,4 @@
-package info.hannes.github
+package info.hannes.appUpdate
 
 import android.content.Context
 import androidx.work.*

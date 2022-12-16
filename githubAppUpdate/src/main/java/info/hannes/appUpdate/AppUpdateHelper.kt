@@ -1,4 +1,4 @@
-package info.hannes.github
+package info.hannes.appUpdate
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -15,8 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import androidx.preference.PreferenceManager
 import androidx.work.*
-import info.hannes.github.model.Asset
-import info.hannes.github.model.GithubVersion
+import info.hannes.appUpdate.github.GithubClient
+import info.hannes.appUpdate.model.Asset
+import info.hannes.appUpdate.model.GithubVersion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

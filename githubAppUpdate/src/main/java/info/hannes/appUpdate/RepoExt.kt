@@ -1,4 +1,4 @@
-package info.hannes.github
+package info.hannes.appUpdate
 
 private fun String.toHttps() = replace("git@", "https//")
     .replace(":", "/")

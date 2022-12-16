@@ -1,4 +1,4 @@
-package info.hannes.github
+package info.hannes.appUpdate.github
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

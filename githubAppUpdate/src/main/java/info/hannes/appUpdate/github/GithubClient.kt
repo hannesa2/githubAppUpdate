@@ -1,4 +1,4 @@
-package info.hannes.github
+package info.hannes.appUpdate.github
 
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -8,8 +8,8 @@ internal class GithubClient(private val logLevel: HttpLoggingInterceptor.Level) 
 
     private val githubService: IGithub
         get() = GithubRestServiceCreationHelper.createGithubService(
-                IGithub::class.java,
-                logLevel
+            IGithub::class.java,
+            logLevel
         )
 
     init {

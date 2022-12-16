@@ -1,9 +1,9 @@
-package info.hannes.github.model;
+package info.hannes.appUpdate.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Uploader {
+public class Author {
 
     @SerializedName("login")
     @Expose

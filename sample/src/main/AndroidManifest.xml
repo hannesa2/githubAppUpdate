@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-            android:name=".MainActivity"
+            android:name="info.hannes.appUpdate.sample.MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>

@@ -1,8 +1,8 @@
-package info.hannes.github;
+package info.hannes.appUpdate.github;
 
 import java.util.List;
 
-import info.hannes.github.model.GithubVersion;
+import info.hannes.appUpdate.model.GithubVersion;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
