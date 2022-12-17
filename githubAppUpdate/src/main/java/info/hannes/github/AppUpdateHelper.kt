@@ -48,7 +48,6 @@ object AppUpdateHelper {
         DownloadWorker.run(activity, currentVersionName, gitRepoUrl, repeatTime, timeUnit)
     }
 
-    // with user feedback
     fun checkWithDialog(
         activity: AppCompatActivity,
         gitRepoUrl: String,
@@ -63,7 +62,7 @@ object AppUpdateHelper {
 
         if (force || prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
             try {
-                val versionList = requestVersions(gitRepoUrl)
+                val versionList = requestGithubVersions(gitRepoUrl)
                 prefs.edit().putLong(key, System.currentTimeMillis()).apply()
 
                 versionList.body()?.firstOrNull()?.let { release ->
@@ -112,7 +111,7 @@ object AppUpdateHelper {
         return client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
     }
 
-    private suspend fun requestVersions(gitRepoUrl: String): Response<MutableList<GithubVersion>> {
+    private suspend fun requestGithubVersions(gitRepoUrl: String): Response<MutableList<GithubVersion>> {
         val versionList = withContext(Dispatchers.Default) {
             val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
             client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
