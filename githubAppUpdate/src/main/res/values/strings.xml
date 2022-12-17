@@ -3,4 +3,5 @@
 
     <string name="directDownload">Download</string>
     <string name="showRelease">Show</string>
+    <string name="new_version">New version</string>
 </resources>

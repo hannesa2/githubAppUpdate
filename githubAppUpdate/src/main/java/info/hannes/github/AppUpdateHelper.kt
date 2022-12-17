@@ -128,9 +128,9 @@ object AppUpdateHelper {
 
         @Suppress("DEPRECATION")
         val dialog = AlertDialog.Builder(activity)
-            .setTitle("New version for ${getAppName(activity)}")
+            .setTitle(activity.getString(R.string.new_version))
             .setMessage(
-                "You use version \n$currentVersionName\n" +
+                "'${getAppName(activity)}' use version \n$currentVersionName\n" +
                         "and there is a new version \n${release.tagName}\n" +
                         "Do you want to download it ?"
             )
