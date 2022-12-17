@@ -20,6 +20,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
+import org.jfrog.artifactory.client.Artifactory
+import org.jfrog.artifactory.client.ArtifactoryClientBuilder
 import retrofit2.Response
 import java.lang.RuntimeException
 import java.net.HttpURLConnection
@@ -46,6 +48,41 @@ object AppUpdateHelper {
     fun checkForNewVersion(activity: AppCompatActivity, gitRepoUrl: String, repeatTime : Long = 6, timeUnit: TimeUnit = TimeUnit.HOURS, token: String? = null) {
         val currentVersionName = activity.getVersionName()
         DownloadWorker.run(activity, currentVersionName, gitRepoUrl, repeatTime, timeUnit, token)
+    }
+
+    fun checkArtifactoryDialog(
+        activity: AppCompatActivity,
+        gitRepoUrl: String,
+        callback: ((String) -> Unit)? = null,
+        force: Boolean = false
+    ) = activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
+
+        val currentVersionName = activity.getVersionName()
+
+        val key = "LAST_VERSION_CHECK"
+        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+
+        if (force || prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
+            try {
+                val versionList = requestArtifactoryVersions(gitRepoUrl)
+                prefs.edit().putLong(key, System.currentTimeMillis()).apply()
+
+                versionList?.body()?.firstOrNull()?.let { release ->
+                    val assetApk = release.assets.find { it.name.endsWith("release.apk") }
+
+                    Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
+                    callback?.invoke(release.tagName)
+                    if (release.tagName > currentVersionName) {
+                        askUser(activity, currentVersionName, release, assetApk)
+                    } else {
+                        callback?.invoke("Nothing to do with ${release.tagName}")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("AppUpdateHelper", "git check deliver: ${e.message}")
+                Toast.makeText(activity, "git check delivers: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     fun checkWithDialog(
@@ -114,6 +151,18 @@ object AppUpdateHelper {
     private fun requestVersionsSync(gitRepoUrl: String, token: String? = null): Response<MutableList<GithubVersion>> {
         val client = GithubClient(HttpLoggingInterceptor.Level.BODY, token)
         return client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
+    }
+
+    private suspend fun requestArtifactoryVersions(artifactoryRepoUrl: String): Response<MutableList<GithubVersion>>? {
+        val artifactory: Artifactory = ArtifactoryClientBuilder.create()
+            .setUrl(artifactoryRepoUrl)
+            //.setUsername("username")
+            //.setPassword("password")
+            .build() // TODO runtime error with "No static field INSTANCE of type Lorg/apache/http/conn/ssl/AllowAllHostnameVerifier"
+        val versionList = withContext(Dispatchers.Default) {
+            artifactory.repositories()
+        }
+        return null
     }
 
     private suspend fun requestGithubVersions(gitRepoUrl: String, token: String? = null): Response<MutableList<GithubVersion>> {
