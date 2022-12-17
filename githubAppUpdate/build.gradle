@@ -9,7 +9,7 @@ android {
     defaultConfig {
         compileSdk 35
         targetSdkVersion 35
-        minSdkVersion 21
+        minSdkVersion 26
         project.archivesBaseName = "githubAppUpdate"
     }
     compileOptions {
@@ -22,12 +22,21 @@ android {
     publishing {
         singleVariant("release") {}
     }
+    packagingOptions {
+        resources {
+            pickFirsts += ["META-INF/atomicfu.kotlin_module", "META-INF/DEPENDENCIES"]
+        }
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.google.code.gson:gson:2.13.2"
     implementation "androidx.work:work-runtime-ktx:2.10.5"
+    implementation 'org.jfrog.artifactory.client:artifactory-java-client-services:2.19.1'
+//    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+//    api 'org.apache.httpcomponents:httpcore:4.4.14'
+//    api 'org.apache.httpcomponents:httpmime:4.5.6'
 
     implementation "com.squareup.retrofit2:retrofit:3.0.0"
     implementation "androidx.appcompat:appcompat:1.7.1"
