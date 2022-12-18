@@ -23,6 +23,9 @@ android {
     publishing {
         singleVariant("release") {}
     }
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 base {
@@ -42,6 +45,9 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
+
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 }
 
 afterEvaluate {
