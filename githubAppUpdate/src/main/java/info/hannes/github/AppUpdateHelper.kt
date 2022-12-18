@@ -26,6 +26,11 @@ import org.jfrog.artifactory.client.ArtifactoryClientBuilder
 import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
+import org.jfrog.artifactory.client.model.impl.RepositoryTypeImpl.LOCAL
+import org.jfrog.artifactory.client.model.impl.RepositoryTypeImpl.REMOTE
+import org.jfrog.artifactory.client.model.impl.RepositoryTypeImpl.VIRTUAL
+import org.jfrog.artifactory.client.model.impl.RepositoryTypeImpl.FEDERATED
+
 
 object AppUpdateHelper {
 
@@ -45,7 +50,7 @@ object AppUpdateHelper {
     }
 
     // silently in background
-    fun checkForNewVersion(activity: AppCompatActivity, gitRepoUrl: String, repeatTime : Long = 6, timeUnit: TimeUnit = TimeUnit.HOURS) {
+    fun checkForNewVersion(activity: AppCompatActivity, gitRepoUrl: String, repeatTime: Long = 6, timeUnit: TimeUnit = TimeUnit.HOURS) {
         val currentVersionName = activity.getVersionName()
         DownloadWorker.run(activity, currentVersionName, gitRepoUrl, repeatTime, timeUnit)
     }
@@ -124,7 +129,7 @@ object AppUpdateHelper {
         appContext: Context,
         currentVersionName: String,
         gitRepoUrl: String
-    ){
+    ) {
         try {
             val versionList = requestVersionsSync(gitRepoUrl)
 
@@ -148,15 +153,34 @@ object AppUpdateHelper {
         return client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
     }
 
-    private suspend fun requestArtifactoryVersions(artifactoryRepoUrl: String): Response<MutableList<GithubVersion>>? {
+    suspend fun requestArtifactoryVersions(artifactoryRepoUrl: String): Response<MutableList<GithubVersion>>? {
         val artifactory: Artifactory = ArtifactoryClientBuilder.create()
             .setUrl(artifactoryRepoUrl)
             //.setUsername("username")
             //.setPassword("password")
             .build() // TODO runtime error with "No static field INSTANCE of type Lorg/apache/http/conn/ssl/AllowAllHostnameVerifier"
         val versionList = withContext(Dispatchers.Default) {
-            artifactory.repositories()
+            val repositories = artifactory.repositories()
+
+//            val allBuilds = artifactory.builds().allBuilds
+//            Log.d("allBuilds", allBuilds.toString())
+
+            val localRepoList = repositories.list(LOCAL)
+            val remoteRepoList = repositories.list(REMOTE)
+            val virtualRepoList = repositories.list(VIRTUAL)
+            val federatedRepoList = repositories.list(FEDERATED)
+
+            Log.d("data", localRepoList.toString())
+//            val list = artifactory.storage().storageInfo.repositoriesSummaryList
+//            Log.d("list", list.toString())
+            val dataA = artifactory.repository("AppStore")
+                .download("/AppStore/AutonomousCar/app/1.2/app-1.2.pom")
+                .doDownload()
+            Log.d("dataA", dataA.toString())
+            Log.d("data", repositories.toString())
+            Log.d("data", repositories.replicationApi)
         }
+        Log.d("data", versionList.toString())
         return null
     }
 
