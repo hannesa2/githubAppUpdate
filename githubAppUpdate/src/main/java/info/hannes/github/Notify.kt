@@ -15,7 +15,7 @@ import info.hannes.github.model.GithubVersion
 internal object Notify {
 
     private var MessageID = 120
-    private const val channelId = "chn-01"
+    private const val channelId = "channelAppUpdate"
     private const val channelFireBaseMsg = "Channel appUpdate"
 
     private val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

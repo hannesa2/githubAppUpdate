@@ -9,7 +9,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
@@ -22,6 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -68,7 +68,7 @@ object AppUpdateHelper {
                 versionList.body()?.firstOrNull()?.let { release ->
                     val assetApk = release.assets.find { it.name.endsWith("release.apk") }
 
-                    Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
+                    Timber.d(release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
                     callback?.invoke(release.tagName)
                     if (release.tagName > currentVersionName) {
                         askUser(activity, currentVersionName, release, assetApk)
@@ -77,32 +77,35 @@ object AppUpdateHelper {
                     }
                 }
             } catch (e: Exception) {
-                Log.e("AppUpdateHelper", "git check deliver: ${e.message}")
+                Timber.e("git check deliver: ${e.message}")
                 Toast.makeText(activity, "git check delivers: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    internal fun checkForNewVersionSilent(
+    internal suspend fun checkForNewVersionSilent(
         appContext: Context,
         currentVersionName: String,
         gitRepoUrl: String
     ){
         try {
             val versionList = requestVersionsSync(gitRepoUrl)
-
+            Timber.e("currentVersionName $currentVersionName")
             versionList.body()?.firstOrNull()?.let { release ->
                 val assetApk = release.assets.find { it.name.endsWith("release.apk") }
 
-                Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
+                Timber.d(release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
                 val text = "You use version $currentVersionName\n" +
                         "and there is a new version ${release.tagName}\n"
                 if (release.tagName > currentVersionName) {
-                    Notify.notification(appContext, text, "New version for '${getAppName(appContext)}'", assetApk, release)
+                    Timber.w(text)
+                    withContext(Dispatchers.Main) {
+                        Notify.notification(appContext, text, "New version for '${getAppName(appContext)}'", assetApk, release)
+                    }
                 }
             }
         } catch (e: Exception) {
-            Log.e("AppUpdateHelper", "git check deliver: ${e.message}")
+            Timber.e("git check deliver: ${e.message}")
         }
     }
 
@@ -142,7 +145,7 @@ object AppUpdateHelper {
             }
             .setPositiveButton(activity.getString(R.string.showRelease)) { dialog, _ ->
                 val uriUrl = Uri.parse(release.htmlUrl)
-                Log.d("open", uriUrl.toString())
+                Timber.d("open $uriUrl")
                 activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
                 dialog.dismiss()
             }
@@ -150,7 +153,7 @@ object AppUpdateHelper {
         assetApk?.let {
             dialog.setNeutralButton(activity.getString(R.string.directDownload)) { dialog, _ ->
                 val uriUrl = Uri.parse(it.browserDownloadUrl)
-                Log.d("open", uriUrl.toString())
+                Timber.d("open $uriUrl")
                 activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
                 dialog.dismiss()
             }
