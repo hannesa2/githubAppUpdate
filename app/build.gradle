@@ -15,14 +15,17 @@ android {
 
         buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitOriginRemote() + "\""
     }
-
     packagingOptions {
-        pickFirst 'META-INF/atomicfu.kotlin_module'
+        resources {
+            pickFirsts += ['META-INF/atomicfu.kotlin_module']
+        }
     }
+
 
     buildFeatures {
         viewBinding = true
     }
+    namespace 'info.hannes.github.sample'
 }
 
 dependencies {

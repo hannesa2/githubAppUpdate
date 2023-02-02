@@ -12,6 +12,7 @@ android {
         minSdkVersion 21
         project.archivesBaseName = "githubAppUpdate"
     }
+    namespace 'info.hannes.github'
 }
 
 dependencies {
