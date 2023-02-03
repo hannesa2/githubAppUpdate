@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         targetSdkVersion 33
-        minSdkVersion 21
+        minSdkVersion 26
         project.archivesBaseName = "githubAppUpdate"
     }
     namespace 'info.hannes.github'
@@ -19,6 +19,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation "androidx.work:work-runtime-ktx:2.7.1"
+    implementation 'org.jfrog.artifactory.client:artifactory-java-client-services:2.13.1'
+//    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+//    api 'org.apache.httpcomponents:httpcore:4.4.14'
+//    api 'org.apache.httpcomponents:httpmime:4.5.6'
 
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "androidx.appcompat:appcompat:1.6.0"
@@ -29,6 +33,9 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
     api "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
     implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
 }
 
 project.afterEvaluate {

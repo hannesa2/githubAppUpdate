@@ -10,14 +10,14 @@ android {
         versionCode getGitCommitCount()
         versionName "1.0"
 
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 33
 
         buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitOriginRemote() + "\""
     }
     packagingOptions {
         resources {
-            pickFirsts += ['META-INF/atomicfu.kotlin_module']
+            pickFirsts += ['META-INF/atomicfu.kotlin_module', 'META-INF/DEPENDENCIES']
         }
     }
 
