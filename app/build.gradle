@@ -4,14 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion propCompileSdkVersion
-
     defaultConfig {
         versionCode getGitCommitCount()
         versionName "1.0"
 
         minSdkVersion 21
-        targetSdkVersion 33
+        compileSdk propCompileSdkVersion
+        targetSdkVersion 34
 
         buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitOriginRemote() + "\""
     }
