@@ -5,10 +5,9 @@ plugins {
 }
 
 android {
-    compileSdkVersion propCompileSdkVersion
-
     defaultConfig {
-        targetSdkVersion 33
+        compileSdk propCompileSdkVersion
+        targetSdkVersion 34
         minSdkVersion 21
         project.archivesBaseName = "githubAppUpdate"
     }
