@@ -86,10 +86,11 @@ object AppUpdateHelper {
     internal fun checkForNewVersionSilent(
         appContext: Context,
         currentVersionName: String,
-        gitRepoUrl: String
+        gitRepoUrl: String,
+        token: String? = null
     ){
         try {
-            val versionList = requestVersionsSync(gitRepoUrl)
+            val versionList = requestVersionsSync(gitRepoUrl, token)
 
             versionList.body()?.firstOrNull()?.let { release ->
                 val assetApk = release.assets.find { it.name.endsWith("release.apk") }
@@ -106,14 +107,14 @@ object AppUpdateHelper {
         }
     }
 
-    private fun requestVersionsSync(gitRepoUrl: String): Response<MutableList<GithubVersion>> {
-        val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
+    private fun requestVersionsSync(gitRepoUrl: String, token: String? = null): Response<MutableList<GithubVersion>> {
+        val client = GithubClient(HttpLoggingInterceptor.Level.BODY, token)
         return client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
     }
 
-    private suspend fun requestGithubVersions(gitRepoUrl: String): Response<MutableList<GithubVersion>> {
+    private suspend fun requestGithubVersions(gitRepoUrl: String, token: String? = null): Response<MutableList<GithubVersion>> {
         val versionList = withContext(Dispatchers.Default) {
-            val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
+            val client = GithubClient(HttpLoggingInterceptor.Level.BODY, token)
             client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
         }
         return versionList
