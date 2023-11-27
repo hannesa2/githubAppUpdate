@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace 'info.hannes.github'
     defaultConfig {
         compileSdk propCompileSdkVersion
         targetSdkVersion 34
@@ -18,8 +19,6 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-
-    namespace 'info.hannes.github'
 }
 
 dependencies {

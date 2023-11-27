@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'info.hannes.github.sample'
     defaultConfig {
         versionCode getGitCommitCount()
         versionName "1.0"
@@ -30,7 +31,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    namespace 'info.hannes.github.sample'
 }
 
 dependencies {
