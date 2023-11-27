@@ -33,7 +33,6 @@ object AppUpdateHelper {
         ""
     }
 
-    @Suppress("DEPRECATION")
     fun Context.getPackageInfo(): PackageInfo {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
@@ -43,16 +42,17 @@ object AppUpdateHelper {
     }
 
     // silently in background
-    fun checkForNewVersion(activity: AppCompatActivity, gitRepoUrl: String, repeatTime : Long = 6, timeUnit: TimeUnit = TimeUnit.HOURS) {
+    fun checkForNewVersion(activity: AppCompatActivity, gitRepoUrl: String, repeatTime : Long = 6, timeUnit: TimeUnit = TimeUnit.HOURS, token: String? = null) {
         val currentVersionName = activity.getVersionName()
-        DownloadWorker.run(activity, currentVersionName, gitRepoUrl, repeatTime, timeUnit)
+        DownloadWorker.run(activity, currentVersionName, gitRepoUrl, repeatTime, timeUnit, token)
     }
 
     fun checkWithDialog(
         activity: AppCompatActivity,
         gitRepoUrl: String,
         callback: ((String) -> Unit)? = null,
-        force: Boolean = false
+        force: Boolean = false,
+        token: String? = null
     ) = activity.lifecycle.coroutineScope.launch(Dispatchers.Main) {
 
         val currentVersionName = activity.getVersionName()
@@ -62,7 +62,7 @@ object AppUpdateHelper {
 
         if (force || prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
             try {
-                val versionList = requestGithubVersions(gitRepoUrl)
+                val versionList = requestGithubVersions(gitRepoUrl, token)
                 prefs.edit().putLong(key, System.currentTimeMillis()).apply()
 
                 versionList.body()?.firstOrNull()?.let { release ->
@@ -86,10 +86,11 @@ object AppUpdateHelper {
     internal fun checkForNewVersionSilent(
         appContext: Context,
         currentVersionName: String,
-        gitRepoUrl: String
+        gitRepoUrl: String,
+        token: String? = null
     ){
         try {
-            val versionList = requestVersionsSync(gitRepoUrl)
+            val versionList = requestVersionsSync(gitRepoUrl, token)
 
             versionList.body()?.firstOrNull()?.let { release ->
                 val assetApk = release.assets.find { it.name.endsWith("release.apk") }
@@ -106,14 +107,14 @@ object AppUpdateHelper {
         }
     }
 
-    private fun requestVersionsSync(gitRepoUrl: String): Response<MutableList<GithubVersion>> {
-        val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
+    private fun requestVersionsSync(gitRepoUrl: String, token: String? = null): Response<MutableList<GithubVersion>> {
+        val client = GithubClient(HttpLoggingInterceptor.Level.BODY, token)
         return client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
     }
 
-    private suspend fun requestGithubVersions(gitRepoUrl: String): Response<MutableList<GithubVersion>> {
+    private suspend fun requestGithubVersions(gitRepoUrl: String, token: String? = null): Response<MutableList<GithubVersion>> {
         val versionList = withContext(Dispatchers.Default) {
-            val client = GithubClient(HttpLoggingInterceptor.Level.BODY)
+            val client = GithubClient(HttpLoggingInterceptor.Level.BODY, token)
             client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
         }
         return versionList

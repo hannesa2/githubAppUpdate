@@ -24,7 +24,8 @@ class MainActivity : AppCompatActivity() {
 
         AppUpdateHelper.checkForNewVersion(
             this,
-            BuildConfig.GIT_REPOSITORY
+            BuildConfig.GIT_REPOSITORY,
+            token = "abcdefgh"
         )
 
         binding.button.setOnClickListener {

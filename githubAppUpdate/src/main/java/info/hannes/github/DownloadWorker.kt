@@ -13,9 +13,10 @@ class DownloadWorker(private val appContext: Context, workerParams: WorkerParame
         // Get the input
         val currentVersion = inputData.getString(CURRENT_VERSION)!!
         val repoUrl = inputData.getString(REPO_URL)!!
+        val token = inputData.getString(TOKEN)!!
 
         val d = async {
-            check(currentVersion, repoUrl)
+            check(currentVersion, repoUrl, token)
             "done"
         }
         val value = d.await()
@@ -25,15 +26,16 @@ class DownloadWorker(private val appContext: Context, workerParams: WorkerParame
         Result.success(outputData)
     }
 
-    private fun check(currentVersion: String, repoUrl: String) {
-        AppUpdateHelper.checkForNewVersionSilent(appContext, currentVersion, repoUrl)
+    private fun check(currentVersion: String, repoUrl: String, token: String? = null) {
+        AppUpdateHelper.checkForNewVersionSilent(appContext, currentVersion, repoUrl, token = token)
     }
 
     companion object {
-        fun run(context: Context, currentVersionName: String, repoUrl: String, repeatTime : Long, timeUnit: TimeUnit): ListenableFuture<MutableList<WorkInfo>> {
+        fun run(context: Context, currentVersionName: String, repoUrl: String, repeatTime : Long, timeUnit: TimeUnit, token: String? = null): ListenableFuture<MutableList<WorkInfo>> {
             val data = workDataOf(
                 Pair(CURRENT_VERSION, currentVersionName),
-                Pair(REPO_URL, repoUrl)
+                Pair(REPO_URL, repoUrl),
+                Pair(TOKEN, token)
             )
 
             val constraints = Constraints.Builder()
@@ -58,6 +60,7 @@ class DownloadWorker(private val appContext: Context, workerParams: WorkerParame
 
         const val CURRENT_VERSION = "CURRENT_VERSION"
         const val REPO_URL = "REPO_URL"
+        const val TOKEN = "TOKEN"
         private const val uniqueWorkName = "PWD"
     }
 }
