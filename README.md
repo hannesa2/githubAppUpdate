@@ -77,6 +77,9 @@ allprojects {
     }
 }
 ```
+## Private repositories
+
+You can specify now an optional personal access token for github. Then it works in private repositories as well.
 
 ## License
 
