@@ -22,6 +22,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
+import java.lang.RuntimeException
+import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit
 
 
@@ -76,6 +78,8 @@ object AppUpdateHelper {
                         callback?.invoke("Nothing to do with ${release.tagName}")
                     }
                 }
+                if (versionList.code() != HttpURLConnection.HTTP_OK)
+                    throw RuntimeException("call delivers ${versionList.code()}")
             } catch (e: Exception) {
                 Log.e("AppUpdateHelper", "git check deliver: ${e.message}")
                 Toast.makeText(activity, "git check delivers: ${e.message}", Toast.LENGTH_LONG).show()
@@ -102,6 +106,8 @@ object AppUpdateHelper {
                     Notify.notification(appContext, text, "New version for '${getAppName(appContext)}'", assetApk, release)
                 }
             }
+            if (versionList.code() != HttpURLConnection.HTTP_OK)
+                throw RuntimeException("call delivers ${versionList.code()}")
         } catch (e: Exception) {
             Log.e("AppUpdateHelper", "git check deliver: ${e.message}")
         }
