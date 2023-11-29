@@ -71,7 +71,6 @@ object AppUpdateHelper {
                     val assetApk = release.assets.find { it.name.endsWith("release.apk") }
 
                     Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
-                    callback?.invoke(release.tagName)
                     if (release.tagName > currentVersionName) {
                         askUser(activity, currentVersionName, release, assetApk)
                     } else {
