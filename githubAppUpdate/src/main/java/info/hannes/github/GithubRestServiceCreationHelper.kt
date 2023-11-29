@@ -20,12 +20,18 @@ internal object GithubRestServiceCreationHelper {
             .create()
     }
 
-    fun <T> createGithubService(retrofitInterface: Class<T>, logLevel: HttpLoggingInterceptor.Level): T {
+    fun <T> createGithubService(retrofitInterface: Class<T>, logLevel: HttpLoggingInterceptor.Level, token: String? = null): T {
 
         httpLoggingInterceptor.level = logLevel
 
-        val client = OkHttpClient.Builder()
+        val clientHttp = OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+
+        token?.let {
+            clientHttp.addInterceptor(TokenInterceptor(it))
+        }
+
+        val client = clientHttp
             .build()
 
         val gson = createGson()
