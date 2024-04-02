@@ -13,7 +13,7 @@ class DownloadWorker(private val appContext: Context, workerParams: WorkerParame
         // Get the input
         val currentVersion = inputData.getString(CURRENT_VERSION)!!
         val repoUrl = inputData.getString(REPO_URL)!!
-        val token = inputData.getString(TOKEN)!!
+        val token = inputData.getString(TOKEN)
 
         val d = async {
             check(currentVersion, repoUrl, token)
