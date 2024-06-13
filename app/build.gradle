@@ -14,6 +14,9 @@ android {
         targetSdkVersion 34
 
         buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitOriginRemote() + "\""
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments useTestStorageService: 'true'
     }
     packagingOptions {
         resources {
@@ -39,6 +42,10 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.7.0"
     implementation 'com.google.android.material:material:1.12.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.4"
+    androidTestUtil "androidx.test.services:test-services:1.4.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
 }
 
 static def getGitCommitCount() {
