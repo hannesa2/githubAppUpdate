@@ -1,7 +1,5 @@
 package info.hannes.github.sample
 
-import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -60,14 +58,12 @@ class SmokeTest {
             .captureToBitmap()
             .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-3")
 
-        onView(withId(R.id.parentPanel))
-            .captureToBitmap()
-            .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-dialog")
-        // close dialog
-        onView(withId(android.R.id.button1)).perform(click())
+//        takeScreenshot()
+//            .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-all")
 
-        onView(isRoot())
-            .captureToBitmap()
-            .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-4")
+        onView(withText("SHOW"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
     }
 }
