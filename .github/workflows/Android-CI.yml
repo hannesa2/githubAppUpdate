@@ -7,11 +7,32 @@ on:
   pull_request:
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  Test:
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        api: [ 28 ]
+        tag: [ default ]
+        abi: [ x86_64 ]
+        emulatorApi: [ 9 ]
+        java_version: [ 17 ]
     steps:
+      - name: kvm support
+        run: |
+          egrep -c '(vmx|svm)' /proc/cpuinfo
+          id
+          sudo adduser $USER kvm
+          sudo chown -R $USER /dev/kvm
+          id
+      - name: prepare
+        run: |
+          sudo apt-get update && sudo apt-get install -y exiftool imagemagick xdg-utils libimage-exiftool-perl zsh jq xorg
       - uses: actions/checkout@v4
       - name: set up JDK
         uses: actions/setup-java@v4
@@ -20,4 +41,29 @@ jobs:
           java-version: 17
       - uses: gradle/actions/wrapper-validation@v3
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew assemble
+      - name: Install Android SDK
+        uses: hannesa2/action-android/install-sdk@0.1.16.7
+      - name: Run instrumentation tests
+        uses: hannesa2/action-android/emulator-run-cmd@0.1.16.7
+        with:
+          cmd: ./gradlew cAT --continue
+          api: ${{ matrix.api }}
+          tag: ${{ matrix.tag }}
+          abi: ${{ matrix.abi }}
+          cmdOptions: -noaudio -no-boot-anim -no-window -metrics-collection
+      - name: Archive screenshots
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: Updater-Screenshots
+          if-no-files-found: error
+          path: |
+            app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
+            app/build/outputs/androidTest-results/connected
+      - name: Archive Espresso results
+        uses: actions/upload-artifact@v3
+        with:
+          if-no-files-found: error
+          name: Updater-Espresso-report
+          path: app/build/reports/androidTests/connected
