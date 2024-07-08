@@ -43,9 +43,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assemble
       - name: Install Android SDK
-        uses: hannesa2/action-android/install-sdk@0.1.16.7
+        uses: hannesa2/action-android/install-sdk@0.1.16.9
       - name: Run instrumentation tests
-        uses: hannesa2/action-android/emulator-run-cmd@0.1.16.7
+        uses: hannesa2/action-android/emulator-run-cmd@0.1.16.9
         with:
           cmd: ./gradlew cAT --continue
           api: ${{ matrix.api }}
