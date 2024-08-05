@@ -39,7 +39,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 17
-      - uses: gradle/actions/wrapper-validation@v3
+      - uses: gradle/actions/wrapper-validation@v4
       - name: Build with Gradle
         run: ./gradlew assemble
       - name: Install Android SDK
