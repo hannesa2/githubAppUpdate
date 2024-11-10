@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
-        api: [ 28 ]
+        api: [ 34 ]
         tag: [ default ]
         abi: [ x86_64 ]
         emulatorApi: [ 9 ]
