@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import androidx.preference.PreferenceManager
-import androidx.work.*
 import info.hannes.github.model.Asset
 import info.hannes.github.model.GithubVersion
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +34,7 @@ object AppUpdateHelper {
         ""
     }
 
-    fun Context.getPackageInfo(): PackageInfo {
+    private fun Context.getPackageInfo(): PackageInfo {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
         } else {

@@ -31,7 +31,7 @@ class DownloadWorker(private val appContext: Context, workerParams: WorkerParame
     }
 
     companion object {
-        fun run(context: Context, currentVersionName: String, repoUrl: String, repeatTime : Long, timeUnit: TimeUnit, token: String? = null): ListenableFuture<MutableList<WorkInfo>> {
+        fun run(context: Context, currentVersionName: String, repoUrl: String, repeatTime : Long, timeUnit: TimeUnit, token: String? = null): ListenableFuture<List<WorkInfo>> {
             val data = workDataOf(
                 Pair(CURRENT_VERSION, currentVersionName),
                 Pair(REPO_URL, repoUrl),
