@@ -1,10 +1,10 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+    id "com.android.application"
+    id "kotlin-android"
 }
 
 android {
-    namespace 'info.hannes.github.sample'
+    namespace "info.hannes.github.sample"
     defaultConfig {
         versionCode getGitCommitCount()
         versionName "1.0"
@@ -13,14 +13,14 @@ android {
         compileSdk propCompileSdkVersion
         targetSdkVersion 34
 
-        buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitOriginRemote() + "\""
+        buildConfigField "String", "GIT_REPOSITORY", "\"" + getGitOriginRemote() + "\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments useTestStorageService: 'true'
+        testInstrumentationRunnerArguments useTestStorageService: "true"
     }
     packagingOptions {
         resources {
-            pickFirsts += ['META-INF/atomicfu.kotlin_module']
+            pickFirsts += ["META-INF/atomicfu.kotlin_module"]
         }
     }
     compileOptions {
@@ -28,7 +28,7 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -37,10 +37,10 @@ android {
 }
 
 dependencies {
-    implementation project(':githubAppUpdate')
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation project(":githubAppUpdate")
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "androidx.appcompat:appcompat:1.7.0"
-    implementation 'com.google.android.material:material:1.12.0'
+    implementation "com.google.android.material:material:1.12.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     androidTestImplementation "androidx.test.ext:junit-ktx:1.2.1"

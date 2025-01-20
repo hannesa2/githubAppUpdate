@@ -1,11 +1,11 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'maven-publish'
+    id "com.android.library"
+    id "kotlin-android"
+    id "maven-publish"
 }
 
 android {
-    namespace 'info.hannes.github'
+    namespace "info.hannes.github"
     defaultConfig {
         compileSdk propCompileSdkVersion
         targetSdkVersion 34
@@ -17,20 +17,20 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = "17"
     }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation "com.google.code.gson:gson:2.11.0"
     implementation "androidx.work:work-runtime-ktx:2.10.0"
 
     implementation "com.squareup.retrofit2:retrofit:2.11.0"
     implementation "androidx.appcompat:appcompat:1.7.0"
     implementation "com.squareup.retrofit2:converter-gson:2.11.0"
     implementation("androidx.preference:preference-ktx:1.2.1") {
-        exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel-ktx'
+        exclude group: "androidx.lifecycle", module: "lifecycle-viewmodel-ktx"
     }
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1"
     api "androidx.lifecycle:lifecycle-runtime-ktx:2.8.7"

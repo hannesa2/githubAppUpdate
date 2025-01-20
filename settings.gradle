@@ -1,2 +1,2 @@
-include ':githubAppUpdate'
-include ':app'
+include ":githubAppUpdate"
+include ":app"

@@ -1,14 +1,14 @@
 import org.gradle.internal.jvm.Jvm
 
 buildscript {
-    ext.kotlin_version = '2.1.0'
+    ext.kotlin_version = "2.1.0"
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.7.3'
+        classpath "com.android.tools.build:gradle:8.7.3"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
