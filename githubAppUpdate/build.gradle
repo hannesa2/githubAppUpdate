@@ -7,8 +7,8 @@ plugins {
 android {
     namespace "info.hannes.github"
     defaultConfig {
-        compileSdk propCompileSdkVersion
-        targetSdkVersion 34
+        compileSdk 35
+        targetSdkVersion 35
         minSdkVersion 21
         project.archivesBaseName = "githubAppUpdate"
     }

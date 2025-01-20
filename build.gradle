@@ -21,7 +21,3 @@ allprojects {
         mavenCentral()
     }
 }
-
-ext {
-    propCompileSdkVersion = 35
-}
