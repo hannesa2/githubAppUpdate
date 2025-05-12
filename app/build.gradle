@@ -9,7 +9,7 @@ android {
         versionCode getGitCommitCount()
         versionName "1.0"
 
-        minSdkVersion 21
+        minSdkVersion 26
         compileSdk 35
         targetSdkVersion 35
 
@@ -20,7 +20,7 @@ android {
     }
     packagingOptions {
         resources {
-            pickFirsts += ["META-INF/atomicfu.kotlin_module"]
+            pickFirsts += ["META-INF/atomicfu.kotlin_module", "META-INF/DEPENDENCIES"]
         }
     }
     compileOptions {
