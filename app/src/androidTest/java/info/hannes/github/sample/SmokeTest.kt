@@ -59,4 +59,23 @@ class SmokeTest {
             .check(matches(isDisplayed()))
             .perform(click())
     }
+
+    @Test
+    fun updateArtifactory() {
+        onView(isRoot())
+            .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-1") })
+        onView(withId(R.id.buttonArtifactory)).perform(click())
+        onView(isRoot())
+            .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-2") })
+        onView(withText(info.hannes.github.R.string.new_version))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+        onView(isRoot())
+            .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-3") })
+
+        onView(withText("SHOW"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+    }
 }
