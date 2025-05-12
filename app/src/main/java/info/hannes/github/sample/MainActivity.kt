@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             token = "abcdefgh"
         )
 
-        binding.button.setOnClickListener {
+        binding.buttonGithub.setOnClickListener {
             AppUpdateHelper.checkWithDialog(
                 this,
                 BuildConfig.GIT_REPOSITORY,
