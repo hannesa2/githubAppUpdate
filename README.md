@@ -59,7 +59,7 @@ This library provides an easy way to update app with provided apk in release.
 
 ## Include the library
 
-The easiest way to add `githubAppUpdate to your project is via Gradle. Just add the following lines to your `build.gradle`:
+The easiest way to add `githubAppUpdate` to your project is via Gradle. Just add the following lines to your `build.gradle`:
 
 ```groovy
 dependencies {
