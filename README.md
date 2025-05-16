@@ -83,7 +83,7 @@ You can specify now an optional personal access token for github. Then it works 
 
 ## License
 
-    Copyright (C) 2021 hannesa2
+    Copyright (C) 2025 hannesa2
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
