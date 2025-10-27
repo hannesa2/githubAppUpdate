@@ -9,7 +9,7 @@ android {
     defaultConfig {
         compileSdk 35
         targetSdkVersion 35
-        minSdkVersion 21
+        minSdkVersion 23
         project.archivesBaseName = "githubAppUpdate"
     }
     compileOptions {
