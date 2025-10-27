@@ -36,6 +36,15 @@ class MainActivity : AppCompatActivity() {
                 force = true // just to enable debugging, without you can only debug once a day
             )
         }
+
+        binding.buttonArtifactory.setOnClickListener {
+            AppUpdateHelper.checkArtifactoryDialog(
+                this,
+                "https://artifactory.myserver.info",
+                { msg -> Log.d("result", msg) },
+                force = true // just to enable debugging, without you can only debug once a day
+            )
+        }
     }
 
 }
