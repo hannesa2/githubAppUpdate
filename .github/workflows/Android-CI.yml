@@ -54,7 +54,7 @@ jobs:
           cmdOptions: -noaudio -no-boot-anim -no-window -metrics-collection
       - name: Archive screenshots
         if: ${{ always() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: Updater-Screenshots
           if-no-files-found: error
@@ -62,7 +62,7 @@ jobs:
             app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
             app/build/outputs/androidTest-results/connected
       - name: Archive Espresso results
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           if-no-files-found: error
           name: Updater-Espresso-report
