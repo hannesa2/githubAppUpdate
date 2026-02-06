@@ -3,6 +3,7 @@ package info.hannes.github.sample
 import android.graphics.Bitmap
 import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.captureToBitmap
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -27,6 +28,9 @@ class SmokeTest {
 
     @Test
     fun smokeTestSimplyStart() {
+        // Dismiss the dialog by pressing back
+        pressBack()
+
         onView(isRoot())
             .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-R") })
 
