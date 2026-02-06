@@ -3,27 +3,21 @@ package info.hannes.github
 import android.content.Context
 import androidx.work.*
 import com.google.common.util.concurrent.ListenableFuture
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import java.util.concurrent.TimeUnit
 
 class DownloadWorker(private val appContext: Context, workerParams: WorkerParameters) : CoroutineWorker(appContext, workerParams) {
 
-    override suspend fun doWork(): Result = coroutineScope {
+    override suspend fun doWork(): Result {
         // Get the input
         val currentVersion = inputData.getString(CURRENT_VERSION)!!
         val repoUrl = inputData.getString(REPO_URL)!!
         val token = inputData.getString(TOKEN)
 
-        val d = async {
-            check(currentVersion, repoUrl, token)
-            "done"
-        }
-        val value = d.await()
+        check(currentVersion, repoUrl, token)
 
         // output param is just a test
-        val outputData = workDataOf(Pair("state", value))
-        Result.success(outputData)
+        val outputData = workDataOf(Pair("state", "done"))
+        return Result.success(outputData)
     }
 
     private fun check(currentVersion: String, repoUrl: String, token: String? = null) {
