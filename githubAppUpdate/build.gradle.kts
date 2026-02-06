@@ -11,6 +11,7 @@ android {
     compileSdk = 36
     defaultConfig {
         minSdk = 23
+        consumerProguardFiles("proguard-rules.pro")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -31,7 +32,7 @@ base {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("androidx.work:work-runtime-ktx:2.11.1")
 
