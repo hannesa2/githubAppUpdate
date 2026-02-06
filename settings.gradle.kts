@@ -1,0 +1,2 @@
+include(":githubAppUpdate")
+include(":app")

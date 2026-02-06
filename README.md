@@ -28,35 +28,50 @@ This library provides an easy way to update app with provided apk in release.
     )
   ```
   
-3. And you need repository info eg in `build.config`
-  
-    ```groovy
-    defaultConfig {
-      ...
-      versionCode getGitCommitCount()
-    
-      buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitRepository() + "\""
-    }
-    
-    static def getGitCommitCount() {
-      def process = "git rev-list HEAD --count".execute()
-      return process.text.toInteger()
-    }
-    
-    static def getGitOriginRemote() {
-      def process = "git remote -v".execute()
-      def values = process.text.toString().trim().split("\\r\\n|\\n|\\r")
-    
-      def found = values.find { it.startsWith("origin") && it.endsWith("(push)") }
-      return found.replace("origin", "").replace("(push)", "").replace(".git", "").trim()
-    }
-    
-    static def getGitRepository() {
-      def token = getGitOriginRemote().split("/")
-      return token[4]
-    }
-    ```
+3. And you need repository info eg in `build.gradle.kts` 
 
+In kts you can use submodule buildSrc
+
+```kotlin
+import info.git.versionHelper.getGitCommitCount
+import info.git.versionHelper.getGitOriginRemote
+
+android {
+    defaultConfig {
+        versionCode = getGitCommitCount()
+        buildConfigField("String", "GIT_REPOSITORY", "\"" + getGitOriginRemote() + "\"")
+    }
+}
+```
+eg groovy in `build.gradle`
+```groovy
+android {
+    defaultConfig {
+        ...
+        versionCode getGitCommitCount()
+
+        buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitRepository() + "\""
+    }
+}
+
+static def getGitCommitCount() {
+  def process = "git rev-list HEAD --count".execute()
+  return process.text.toInteger()
+}
+
+static def getGitOriginRemote() {
+  def process = "git remote -v".execute()
+  def values = process.text.toString().trim().split("\\r\\n|\\n|\\r")
+
+  def found = values.find { it.startsWith("origin") && it.endsWith("(push)") }
+  return found.replace("origin", "").replace("(push)", "").replace(".git", "").trim()
+}
+
+static def getGitRepository() {
+  def token = getGitOriginRemote().split("/")
+  return token[4]
+}
+```
 ## Include the library
 
 The easiest way to add `githubAppUpdate` to your project is via Gradle. Just add the following lines to your `build.gradle`:
@@ -83,7 +98,7 @@ You can specify now an optional personal access token for github. Then it works 
 
 ## License
 
-    Copyright (C) 2025 hannesa2
+    Copyright (C) 2026 hannesa2
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
