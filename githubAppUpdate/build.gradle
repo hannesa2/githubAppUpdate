@@ -10,7 +10,7 @@ android {
         compileSdk 36
         targetSdkVersion 36
         minSdkVersion 23
-        project.archivesBaseName = "githubAppUpdate"
+//        project.archivesBaseName = "githubAppUpdate"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
