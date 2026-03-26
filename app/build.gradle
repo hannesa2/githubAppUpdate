@@ -33,6 +33,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+3        buildConfig = true
     }
 }
 
