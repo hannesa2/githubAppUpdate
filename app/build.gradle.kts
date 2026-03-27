@@ -52,7 +52,7 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.10")
 
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.2.1")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.3.0")
     androidTestUtil("androidx.test.services:test-services:1.6.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
 }
