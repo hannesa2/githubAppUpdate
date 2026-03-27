@@ -32,7 +32,7 @@ base {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.10")
     implementation("com.google.code.gson:gson:2.13.2")
-    implementation("androidx.work:work-runtime-ktx:2.11.1")
+    implementation("androidx.work:work-runtime-ktx:2.11.2")
 
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
