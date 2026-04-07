@@ -6,23 +6,19 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.net.toUri
 import info.hannes.github.model.Asset
 import info.hannes.github.model.GithubVersion
 
 internal object Notify {
 
     private var MessageID = 120
-    private const val channelId = "channelAppUpdate"
-    private const val channelFireBaseMsg = "Channel appUpdate"
+    private const val CHANNEL_ID = "channelAppUpdate"
+    private const val CHANNEL_FIREBASE_MSG = "Channel appUpdate"
 
-    private val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-    } else {
-        PendingIntent.FLAG_UPDATE_CURRENT
-    }
+    private const val PENDING_INTENT_FLAGS = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 
     fun notification(context: Context, messageString: String, notificationTitle: String, assetApk: Asset?, release: GithubVersion) {
 
@@ -31,7 +27,7 @@ internal object Notify {
         val notificationManager = context.getSystemService(ns) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(channelId, channelFireBaseMsg, NotificationManager.IMPORTANCE_LOW)
+            val notificationChannel = NotificationChannel(CHANNEL_ID, CHANNEL_FIREBASE_MSG, NotificationManager.IMPORTANCE_LOW)
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.RED
             notificationChannel.enableVibration(true)
@@ -46,11 +42,11 @@ internal object Notify {
         //the message that will be displayed as the ticker
         val ticker = "$contentTitle $messageString"
 
-        val showUrl = Uri.parse(release.htmlUrl)
-        val showPendingIntent = PendingIntent.getActivity(context, 0, Intent(Intent.ACTION_VIEW, showUrl), pendingIntentFlags)
+        val showUrl = release.htmlUrl.toUri()
+        val showPendingIntent = PendingIntent.getActivity(context, 0, Intent(Intent.ACTION_VIEW, showUrl), PENDING_INTENT_FLAGS)
 
         //build the notification
-        val notificationCompat = NotificationCompat.Builder(context, channelId)
+        val notificationCompat = NotificationCompat.Builder(context, CHANNEL_ID)
             .setAutoCancel(true)
             .setContentTitle(contentTitle)
             .setContentIntent(showPendingIntent)
@@ -62,8 +58,8 @@ internal object Notify {
             .addAction(R.drawable.githib_logo, context.getString(R.string.showRelease), showPendingIntent)
 
         assetApk?.let {
-            val uriUrl = Uri.parse(it.browserDownloadUrl)
-            val directPendingIntent = PendingIntent.getActivity(context, 0, Intent(Intent.ACTION_VIEW, uriUrl), pendingIntentFlags)
+            val uriUrl = it.browserDownloadUrl.toUri()
+            val directPendingIntent = PendingIntent.getActivity(context, 0, Intent(Intent.ACTION_VIEW, uriUrl), PENDING_INTENT_FLAGS)
             notificationCompat.addAction(R.drawable.githib_logo, context.getString(R.string.directDownload), directPendingIntent)
         }
 

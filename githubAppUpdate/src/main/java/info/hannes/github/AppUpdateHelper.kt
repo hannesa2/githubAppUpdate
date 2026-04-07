@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
@@ -24,13 +23,15 @@ import retrofit2.Response
 import java.lang.RuntimeException
 import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit
+import androidx.core.net.toUri
+import androidx.core.content.edit
 
 
 object AppUpdateHelper {
 
     private fun Activity.getVersionName(): String = try {
         this.getPackageInfo().versionName ?: ""
-    } catch (e: PackageManager.NameNotFoundException) {
+    } catch (_: PackageManager.NameNotFoundException) {
         ""
     }
 
@@ -64,7 +65,7 @@ object AppUpdateHelper {
         if (force || prefs.getLong(key, 0) < System.currentTimeMillis() - 1000 * 3600 * 24 / 24 / 60 * 5) {
             try {
                 val versionList = requestGithubVersions(gitRepoUrl, token)
-                prefs.edit().putLong(key, System.currentTimeMillis()).apply()
+                prefs.edit { putLong(key, System.currentTimeMillis()) }
 
                 versionList.body()?.firstOrNull()?.let { release ->
                     val assetApk = release.assets.find { it.name.endsWith("release.apk") }
@@ -146,7 +147,7 @@ object AppUpdateHelper {
                 dialog.dismiss()
             }
             .setPositiveButton(activity.getString(R.string.showRelease)) { dialog, _ ->
-                val uriUrl = Uri.parse(release.htmlUrl)
+                val uriUrl = release.htmlUrl.toUri()
                 Log.d("open", uriUrl.toString())
                 activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
                 dialog.dismiss()
@@ -154,7 +155,7 @@ object AppUpdateHelper {
 
         assetApk?.let {
             dialog.setNeutralButton(activity.getString(R.string.directDownload)) { dialog, _ ->
-                val uriUrl = Uri.parse(it.browserDownloadUrl)
+                val uriUrl = it.browserDownloadUrl.toUri()
                 Log.d("open", uriUrl.toString())
                 activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
                 dialog.dismiss()
