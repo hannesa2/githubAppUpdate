@@ -68,7 +68,7 @@ object AppUpdateHelper {
                 prefs.edit { putLong(key, System.currentTimeMillis()) }
 
                 versionList.body()?.firstOrNull()?.let { release ->
-                    val assetApk = release.assets.find { it.name.endsWith("release.apk") }
+                    val assetApk = release.assets.find { it.name?.endsWith("release.apk") == true }
 
                     Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
                     if (release.tagName > currentVersionName) {
@@ -96,7 +96,7 @@ object AppUpdateHelper {
             val versionList = requestVersionsSync(gitRepoUrl, token)
 
             versionList.body()?.firstOrNull()?.let { release ->
-                val assetApk = release.assets.find { it.name.endsWith("release.apk") }
+                val assetApk = release.assets.find { it.name?.endsWith("release.apk") == true }
 
                 Log.d("AppUpdateHelper", release.tagName + " > " + currentVersionName + " " + (release.tagName > currentVersionName))
                 val text = "You use version $currentVersionName\n" +
@@ -112,12 +112,12 @@ object AppUpdateHelper {
         }
     }
 
-    private fun requestVersionsSync(gitRepoUrl: String, token: String? = null): Response<MutableList<GithubVersion>> {
+    private fun requestVersionsSync(gitRepoUrl: String, token: String? = null): Response<List<GithubVersion>> {
         val client = GithubClient(HttpLoggingInterceptor.Level.BODY, token)
         return client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
     }
 
-    private suspend fun requestGithubVersions(gitRepoUrl: String, token: String? = null): Response<MutableList<GithubVersion>> {
+    private suspend fun requestGithubVersions(gitRepoUrl: String, token: String? = null): Response<List<GithubVersion>> {
         val versionList = withContext(Dispatchers.Default) {
             val client = GithubClient(HttpLoggingInterceptor.Level.BODY, token)
             client.github.getGithubVersions(gitRepoUrl.user(), gitRepoUrl.repo()).execute()
@@ -147,7 +147,7 @@ object AppUpdateHelper {
                 dialog.dismiss()
             }
             .setPositiveButton(activity.getString(R.string.showRelease)) { dialog, _ ->
-                val uriUrl = release.htmlUrl.toUri()
+                val uriUrl = release.htmlUrl.orEmpty().toUri()
                 Log.d("open", uriUrl.toString())
                 activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
                 dialog.dismiss()
@@ -155,7 +155,7 @@ object AppUpdateHelper {
 
         assetApk?.let {
             dialog.setNeutralButton(activity.getString(R.string.directDownload)) { dialog, _ ->
-                val uriUrl = it.browserDownloadUrl.toUri()
+                val uriUrl = it.browserDownloadUrl.orEmpty().toUri()
                 Log.d("open", uriUrl.toString())
                 activity.startActivity(Intent(Intent.ACTION_VIEW, uriUrl))
                 dialog.dismiss()

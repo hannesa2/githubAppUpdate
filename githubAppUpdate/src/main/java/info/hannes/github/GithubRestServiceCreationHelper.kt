@@ -1,23 +1,23 @@
 package info.hannes.github
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 internal object GithubRestServiceCreationHelper {
 
     private var httpLoggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()
 
-    init {
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
+    private val json = Json {
+        ignoreUnknownKeys = true
+        coerceInputValues = true
     }
 
-    private fun createGson(): Gson {
-        return GsonBuilder().serializeNulls()
-            .create()
+    init {
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
     }
 
     fun <T> createGithubService(retrofitInterface: Class<T>, logLevel: HttpLoggingInterceptor.Level, token: String? = null): T {
@@ -34,11 +34,10 @@ internal object GithubRestServiceCreationHelper {
         val client = clientHttp
             .build()
 
-        val gson = createGson()
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.github.com")
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(json.asConverterFactory("application/json; charset=UTF-8".toMediaType()))
             .build()
 
         return retrofit.create(retrofitInterface)

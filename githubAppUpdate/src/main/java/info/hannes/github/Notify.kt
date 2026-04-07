@@ -42,7 +42,7 @@ internal object Notify {
         //the message that will be displayed as the ticker
         val ticker = "$contentTitle $messageString"
 
-        val showUrl = release.htmlUrl.toUri()
+        val showUrl = release.htmlUrl.orEmpty().toUri()
         val showPendingIntent = PendingIntent.getActivity(context, 0, Intent(Intent.ACTION_VIEW, showUrl), PENDING_INTENT_FLAGS)
 
         //build the notification
@@ -58,7 +58,7 @@ internal object Notify {
             .addAction(R.drawable.githib_logo, context.getString(R.string.showRelease), showPendingIntent)
 
         assetApk?.let {
-            val uriUrl = it.browserDownloadUrl.toUri()
+            val uriUrl = it.browserDownloadUrl.orEmpty().toUri()
             val directPendingIntent = PendingIntent.getActivity(context, 0, Intent(Intent.ACTION_VIEW, uriUrl), PENDING_INTENT_FLAGS)
             notificationCompat.addAction(R.drawable.githib_logo, context.getString(R.string.directDownload), directPendingIntent)
         }
