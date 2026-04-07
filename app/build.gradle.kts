@@ -26,7 +26,7 @@ android {
     }
     packaging {
         resources {
-            pickFirsts += setOf("META-INF/atomicfu.kotlin_module")
+            pickFirsts += setOf("META-INF/atomicfu.kotlin_module", "META-INF/DEPENDENCIES")
         }
     }
     compileOptions {

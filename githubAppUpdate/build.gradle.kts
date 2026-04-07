@@ -23,6 +23,9 @@ android {
     publishing {
         singleVariant("release") {}
     }
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 base {
@@ -33,6 +36,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.20")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("androidx.work:work-runtime-ktx:2.11.2")
+    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:2.19.1")
 
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
@@ -41,6 +45,9 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
+
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 }
 
 afterEvaluate {

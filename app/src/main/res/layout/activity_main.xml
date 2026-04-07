@@ -6,9 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/fragment_main"
         android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_height="match_parent">
 
         <Button
@@ -18,7 +19,15 @@
             android:layout_height="wrap_content"
             android:text="check Github"
             tools:ignore="HardcodedText" />
-    </FrameLayout>
+
+        <Button
+            android:id="@+id/buttonArtifactory"
+            android:layout_gravity="center|center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="check Artifactory"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
