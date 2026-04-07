@@ -78,7 +78,7 @@ The easiest way to add `githubAppUpdate` to your project is via Gradle. Just add
 
 ```groovy
 dependencies {
-    implementation 'com.github.hannesa2:githubAppUpdate:$latestVersion'
+    implementation "com.github.hannesa2:githubAppUpdate:$latestVersion"
 }
 ```
 
@@ -88,7 +88,7 @@ To tell Gradle where to find the library, make sure `build.gradle` also contains
 allprojects {
     repositories {
         ...
-        maven { url 'https://jitpack.io' }
+        maven { url "https://jitpack.io" }
     }
 }
 ```
