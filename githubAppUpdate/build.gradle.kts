@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("com.android.library")
     id("maven-publish")
+    kotlin("plugin.serialization") version "2.3.20"
 }
 
 android {
@@ -10,6 +11,7 @@ android {
     compileSdk = 36
     defaultConfig {
         minSdk = 23
+        consumerProguardFiles("proguard-rules.pro")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -31,12 +33,12 @@ base {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.20")
-    implementation("com.google.code.gson:gson:2.13.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
     implementation("androidx.work:work-runtime-ktx:2.11.2")
 
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
