@@ -40,7 +40,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
 }
