@@ -32,7 +32,7 @@ base {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.21")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
     implementation("androidx.work:work-runtime-ktx:2.11.2")
 
