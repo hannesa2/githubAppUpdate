@@ -42,7 +42,7 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.4.0")
 }
 
 afterEvaluate {
