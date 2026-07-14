@@ -50,7 +50,7 @@ dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.14.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.10")
 
     androidTestImplementation("androidx.test.ext:junit-ktx:1.2.1")
     androidTestUtil("androidx.test.services:test-services:1.6.0")
