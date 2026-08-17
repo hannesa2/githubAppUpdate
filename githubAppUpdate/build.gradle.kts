@@ -37,7 +37,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.11.2")
 
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("androidx.appcompat:appcompat:1.7.1")
+    implementation("androidx.appcompat:appcompat:1.8.0")
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
