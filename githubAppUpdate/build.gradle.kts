@@ -34,7 +34,7 @@ base {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.20")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
-    implementation("androidx.work:work-runtime-ktx:2.11.2")
+    implementation("androidx.work:work-runtime-ktx:2.12.0")
 
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("androidx.appcompat:appcompat:1.8.0")
