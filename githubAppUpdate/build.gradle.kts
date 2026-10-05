@@ -10,7 +10,7 @@ android {
     namespace = "info.hannes.github"
     compileSdk = 36
     defaultConfig {
-        minSdk = 23
+        minSdk = 24
         consumerProguardFiles("proguard-rules.pro")
     }
     compileOptions {

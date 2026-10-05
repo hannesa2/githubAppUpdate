@@ -13,7 +13,7 @@ android {
         versionCode = getGitCommitCount()
         versionName = "1.0"
 
-        minSdk = 23
+        minSdk = 24
 
         buildConfigField("String", "GIT_REPOSITORY", "\"" + getGitOriginRemote() + "\"")
 
