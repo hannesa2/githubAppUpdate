@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "info.hannes.github"
-    compileSdk = 36
+    compileSdk = 37
     defaultConfig {
         minSdk = 24
         consumerProguardFiles("proguard-rules.pro")
