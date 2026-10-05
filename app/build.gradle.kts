@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "info.hannes.github.sample"
-    compileSdk = 36
+    compileSdk = 37
     defaultConfig {
         versionCode = getGitCommitCount()
         versionName = "1.0"
