@@ -42,7 +42,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      - uses: gradle/actions/wrapper-validation@v6.4.0
+      - uses: gradle/actions/wrapper-validation@v6.4.1
       - name: Build with Gradle
         run: ./gradlew assemble
       - name: Install Android SDK
